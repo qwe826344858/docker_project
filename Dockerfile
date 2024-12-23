@@ -1,4 +1,4 @@
-# 使用 Python 作为基础镜像
+# 使用 Python 作为基础镜像(需要提前创建)
 FROM docker_python:v1.0
 
 
