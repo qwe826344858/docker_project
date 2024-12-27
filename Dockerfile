@@ -5,8 +5,12 @@ FROM docker_python:v1.0
 #RUN pip list > /home/lighthouse/test_py_beta/docker_project/installed_packages.txt
 
 # 设置工作目录
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/docker_project
 
+# 创建日志目录 并挂载宿主机的日志目录
+RUN mkdir "/usr/src/app/docker_project/log"
+ENV PATH=$PATH:/usr/src/app/docker_project
+ENV PYTHONPATH /usr/src/app/docker_project
 
 # 关闭代理
 #RUN unset http_proxy
@@ -22,9 +26,8 @@ WORKDIR /usr/src/app
 #RUN pip install -r requirements.txt
 
 # 复制项目文件到容器中
-COPY . /usr/src/app/
+COPY . /usr/src/app/docker_project
 
 
 # 运行 main.py
-CMD ["python3", "main.py"]
-
+CMD ["sh","-c","python3 ./DockerProjectAo/server/server.py >> /usr/src/app/docker_project/log/docker_dockerprojectao_stdout.log 2>&1"]

@@ -1,6 +1,6 @@
 import redis
 
-from tools.envPythonConfig import getEnvConfig
+from toolsUtils.envPythonConfig import getEnvConfig
 
 errCode = 0
 errMsg = "success"

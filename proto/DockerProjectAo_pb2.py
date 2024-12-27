@@ -12,8 +12,8 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
-import DockerProjectConst_pb2 as DockerProjectConst__pb2
-import DockerProjectCommon_pb2 as DockerProjectCommon__pb2
+from proto import DockerProjectConst_pb2 as DockerProjectConst__pb2
+from proto import DockerProjectCommon_pb2 as DockerProjectCommon__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x44ockerProjectAo.proto\x12\x12\x64ockerProjectProto\x1a\x18\x44ockerProjectConst.proto\x1a\x19\x44ockerProjectCommon.proto2k\n\x0f\x44ockerProjectAo\x12X\n\x0bGetItemInfo\x12\".dockerProjectProto.GetItemInfoReq\x1a#.dockerProjectProto.GetItemInfoResp\"\x00\x42\x15Z\x13\x64ockerProjectProto/b\x06proto3')

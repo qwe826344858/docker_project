@@ -1,16 +1,18 @@
 #!/bin/bash 
 
 makeGoFile() {
+  DOCKER_IP=$(ifconfig docker0 | grep 'inet ' | awk '{print $2}')
   # 清空文件
   > envGoConfig.go
 
   ip=$(getCurrentIp)
 	{
-		echo 'package main'
+		echo 'package envcfg'
 		echo ''
 		echo 'type EnvConfig struct {'
 		echo '	RedisConf RedisConfig `json:"redis_conf"`'
 		echo '	MysqlConf MysqlConfig `json:"mysql_conf"`'
+		echo '	GRpcConf GRpcConfig `json:"grpc_config"`'
 		echo '}'
 		echo ''
 		echo 'type RedisConfig struct {'
@@ -23,7 +25,11 @@ makeGoFile() {
 		echo '	Password string `json:"password"`'
 		echo '}'
 		echo ''
-		echo 'func getEnvConfig() *EnvConfig {'
+		echo 'type GRpcConfig struct {'
+    echo '	Host     string `json:"host"`'
+    echo '}'
+    echo ''
+		echo 'func GetEnvConfig() *EnvConfig {'
 		echo '	return &EnvConfig{'
 		echo '		RedisConf: RedisConfig{'
 		echo "			Host: \"$ip\","
@@ -33,6 +39,9 @@ makeGoFile() {
 		echo '			Username: "root",'
 		echo '			Password: "zoneslee",'
 		echo '		},'
+		echo '		GRpcConf: GRpcConfig{'
+    echo "			Host: \"$DOCKER_IP\","
+    echo '		},'
 		echo '	}'
 		echo '}'
 	} > envGoConfig.go
@@ -41,6 +50,7 @@ makeGoFile() {
 }
 
 makePythonFile() {
+  DOCKER_IP=$(ifconfig docker0 | grep 'inet ' | awk '{print $2}')
   # 清空文件
   > envPythonConfig.py
 
@@ -55,12 +65,15 @@ makePythonFile() {
     echo "            \"host\": \"$ip\","  # 使用变量替换
     echo '            "username": "root",'
     echo '            "password": "zoneslee",'
-    echo '        }'
+    echo '        },'
+    echo '        "grpc_conf": {'
+    echo "            \"host\": \"$DOCKER_IP\","  # 使用变量替换
+    echo '        },'
     echo '    }'
   } > envPythonConfig.py
 
   echo "生成python配置文件成功 envPythonConfig.py"
-  #cp envPythonConfig.py /home/lighthouse/test_py_beta/docker_project/tools/
+  cp envPythonConfig.py /home/lighthouse/test_py_beta/docker_project/tools/
   echo "配置文件复制成功!"
 }
 
@@ -85,3 +98,6 @@ else
    echo "未知的语言: $language"
    exit 1
 fi
+
+
+
