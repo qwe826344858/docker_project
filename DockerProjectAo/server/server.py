@@ -17,3 +17,4 @@ class DockerProjectAoServer(GRPCServer):
 if __name__ == '__main__':
     server = DockerProjectAoServer()
     server.run()
+    print("DockerProjectAoServer start!")
