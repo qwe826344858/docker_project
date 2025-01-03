@@ -11,6 +11,7 @@ WORKDIR /usr/src/app/docker_project
 RUN mkdir "/usr/src/app/docker_project/log"
 ENV PATH=$PATH:/usr/src/app/docker_project
 ENV PYTHONPATH /usr/src/app/docker_project
+ENV PYTHON_ENV=docker
 
 # 关闭代理
 #RUN unset http_proxy

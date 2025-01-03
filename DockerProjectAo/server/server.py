@@ -3,7 +3,9 @@ from CommonLogic.CommonServer import GRPCServer
 from CommonLogic.config import getServicePort
 from proto import DockerProjectAo_pb2_grpc
 from DockerProjectAo.logic.DockerProjectAoLogic import DockerProjectAoLogic
+from toolsUtils.loggerHelper import Logger
 
+Logger.init()
 class DockerProjectAoServer(GRPCServer):
     def __init__(self):
         self.envConfig = getEnvConfig()
@@ -17,4 +19,4 @@ class DockerProjectAoServer(GRPCServer):
 if __name__ == '__main__':
     server = DockerProjectAoServer()
     server.run()
-    print("DockerProjectAoServer start!")
+    Logger.info("DockerProjectAoServer start!")

@@ -1,6 +1,8 @@
 from CommonLogic.CommonClient import GRpcClient
 from proto import DockerProjectAo_pb2_grpc,DockerProjectCommon_pb2
+from toolsUtils.loggerHelper import Logger
 
+Logger.init()
 def testPythonService():
     # 初始化客户端
     c = GRpcClient()
@@ -14,9 +16,9 @@ def testPythonService():
     param.itemId = 1
     try:
         resp = client.GetItemInfo(param)
-        print(resp)
+        Logger.info(resp)
     except Exception as e:
-        print(f"Exception err:{e}")
+        Logger.info(f"Exception err:{e}")
     return
 
 

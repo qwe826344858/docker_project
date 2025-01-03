@@ -3,8 +3,9 @@ import datetime as dt
 from toolsUtils.envPythonConfig import getEnvConfig
 from toolsUtils.mysqlHelper import DBHelper
 from toolsUtils.redisHelper import get_redis_connection, getRedisString
+from toolsUtils.loggerHelper import Logger
 
-
+Logger.init()
 class RunProcess:
     conf = {}
 
@@ -16,10 +17,10 @@ class RunProcess:
         key = f"VISUAL_GRAPHICS_LAST_ITEM_ID_" + dt.datetime.now().strftime("%Y%m%d")
         ret,lastID = getRedisString(key)
         if not ret:
-            print(f"获取redis 失败!")
+            Logger.info(f"获取redis 失败!")
             return False
 
-        print(f"key:{key} lastID:{lastID}")
+        Logger.info(f"key:{key} lastID:{lastID}")
 
         return True
 
@@ -34,9 +35,9 @@ class RunProcess:
         sql_str_select = f"SELECT * FROM {table_name} WHERE `Fuid` > 1;"
         ret,data = dbHelper.execute_query(sql_str_select)
         if not ret :
-            print("CS_SteamItem_Timer 查询失败")
+            Logger.info("CS_SteamItem_Timer 查询失败")
             return False
-        print(f"data:{data}")
+        Logger.info(f"data:{data}")
         return True
 
 
