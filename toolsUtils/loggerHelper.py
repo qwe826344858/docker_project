@@ -2,6 +2,9 @@ import datetime
 import inspect
 import os
 import multiprocessing as mp
+import threading
+import fcntl
+
 from toolsUtils.commonConfig import CommonConfig
 
 
@@ -62,7 +65,8 @@ class Logger:
 
 
     def run(self,log_message):
-        p = mp.Process(target=self.addInfo(log_message=log_message))
+        # p = mp.Process(target=self.addInfo(log_message=log_message))  # 开启进程
+        p = threading.Thread(target=self.addInfo(log_message=log_message))  # 开启线程
         p.start()
         p.join()
 
@@ -84,10 +88,19 @@ class Logger:
         if not os.path.exists(self.save_path):
             # 创建文件
             open(self.save_path, "a").close()
+            os.chmod(self.save_path, 0o777) # 给文件加权限
 
         with open(self.save_path, "a") as file:
-            for log in self.cache_pool:
-                file.write(log + "\n")
+            # 获取文件锁
+            fcntl.flock(file, fcntl.LOCK_EX)
+            try:
+                for log in self.cache_pool:
+                    file.write(log + "\n")
+            except Exception as e:
+                print(f"Error occurred: {e}")
+            finally:
+                # 释放文件锁
+                fcntl.flock(file, fcntl.LOCK_UN)
         return
 
     def __del__(self):
