@@ -8,6 +8,7 @@ from toolsUtils.loggerHelper import Logger
 Logger.init()
 class GRpcClient:
     GRpc_Client_Stub = None
+    channel = None
 
     def ResignedClient(self,ServiceName,Stub):
         self.SetGRpcClientStub(Stub)
@@ -18,8 +19,8 @@ class GRpcClient:
 
         client = None
         try:
-            with grpc.insecure_channel(f"{Host}:{Port}") as channel:
-                client = self.GRpc_Client_Stub(channel)
+            self.channel =grpc.insecure_channel(f"{Host}:{Port}")
+            client = self.GRpc_Client_Stub(self.channel)
         except Exception as e:
             Logger.info(f"An error occurred: {e}")
 
@@ -28,3 +29,11 @@ class GRpcClient:
     def SetGRpcClientStub(self,Stub):
         self.GRpc_Client_Stub = Stub
         return
+
+    def Close(self):
+        if self.channel:
+            self.channel.close()
+        return
+
+    def __del__(self):
+        self.Close()

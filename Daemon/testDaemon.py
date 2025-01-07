@@ -10,9 +10,12 @@ def testPythonService():
     Stub = DockerProjectAo_pb2_grpc.DockerProjectAoStub
     # 注册一个客户端,返回这个服务所有可调用的服务
     client = c.ResignedClient("DockerProjectAo",Stub)
+    if client is None:
+        Logger.info("client Resigne is failed!")
+        return
 
     param = DockerProjectCommon_pb2.GetItemInfoReq()
-    param.reqHeader = DockerProjectCommon_pb2.RequestHeader()
+    param.reqHeader.CopyFrom(DockerProjectCommon_pb2.RequestHeader())
     param.itemId = 1
     try:
         resp = client.GetItemInfo(param)

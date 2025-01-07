@@ -1,7 +1,8 @@
 from concurrent import futures
 import grpc
+from toolsUtils.loggerHelper import Logger
 
-
+Logger.init()
 class GRPCServer:
     GRpc_Add_Servicer_Func = None
     Port = None
@@ -18,7 +19,7 @@ class GRPCServer:
 
         # 启动服务器
         gs.start()
-        print(f"Server started, listening on {self.Port}")
+        Logger.info(f"Server started, listening on {self.Port}")
 
         # 等待服务器终止
         gs.wait_for_termination()
